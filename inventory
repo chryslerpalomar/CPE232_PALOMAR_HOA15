@@ -1,0 +1,27 @@
+# school
+#192.168.56.109 server1
+#192.168.56.108 server2
+#192.168.56.111 centos
+
+#[controller]
+#192.168.56.109 ansible_python_interpreter=/usr/bin/python3
+
+#192.168.56.108 ansible_python_interpreter=/usr/bin/python3
+#192.168.56.109 ansible_python_interpreter=/usr/bin/python3
+#192.168.56.111 ansible_python_interpreter=/usr/bin/python
+
+#-------------------------------------------------------------------
+# home
+#192.168.56.109 server1
+#192.168.56.106 server2 #not updated
+#192.168.56.110 centos
+
+[controller_ubuntu]
+#192.168.56.109 #server1
+
+[controller_centos]
+192.168.56.110 #centos
+
+#192.168.56.109 ansible_python_interpreter=/usr/bin/python3
+#192.168.56.105 ansible_python_interpreter=/usr/bin/python3
+#192.168.56.110 ansible_python_interpreter=/usr/bin/python

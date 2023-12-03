@@ -1,0 +1,86 @@
+  - name: install horizon (CentOS)
+    yum:
+      name: openstack-dashboard
+      state: present
+
+  - name: add OPENSTACK_HOST
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'OPENSTACK_HOST = "controller"'
+      state: present
+
+  - name: add ALLOWED_HOSTS
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'ALLOWED_HOSTS = ["*"]'
+      state: present
+
+  - name: add SESSION_ENGINE
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'SESSION_ENGINE = "django.contrib.sessions.backends.cache"'
+      state: present
+
+  - name: add CACHES
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'CACHES = { "default": {"BACKEND": "django.core.cache.backends.memcached.MemcachedCache", "LOCATION": "controller:11211",} }'
+      state: present
+
+  - name: add OPENSTACK_KEYSTONE_URL
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST'
+      state: present
+
+  - name: add OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True'
+      state: present
+
+  - name: add OPENSTACK_API_VERSIONS
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'OPENSTACK_API_VERSIONS = { "identity": 3, "image": 2, "volume": 3,}'
+      state: present
+
+  - name: add OPENSTACK_KEYSTONE_DEFAULT_DOMAIN
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = "Default"'
+      state: present
+
+  - name: add OPENSTACK_KEYSTONE_DEFAULT_ROLE
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"'
+      state: present
+
+  - name: add OPENSTACK_NEUTRON_NETWORK
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'OPENSTACK_NEUTRON_NETWORK = { "enable_router": False, "enable_quotas": False, "enable_ipv6": False, "enable_distributed_router": False, "enable_ha_router": False, "enable_fip_topology_check": False, }'
+      state: present
+
+  - name: add TIME_ZONE
+    lineinfile:
+      path: /etc/openstack-dashboard/local_settings
+      line: 'TIME_ZONE = "TIME_ZONE"'
+      state: present
+
+  - name: add line to dashboard conf
+    lineinfile:
+      path: /etc/httpd/conf.d/openstack-dashboard.conf
+      line: 'WSGIApplicationGroup %{GLOBAL}'
+      state: present
+
+#  - name: restart httpd service
+#    service:
+#      name: httpd
+#      state: restarted
+
+  - name: restart memcached service
+    service:
+      name: memcached
+      state: restarted
